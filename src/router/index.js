@@ -116,6 +116,9 @@ const powerRouter = [
       { path: "export", name: "导出", component: () => import("@/view/vueFun/export"), meta: { title: "导出", icon: "el-icon-tickets" } },
       { path: "test", name: "测试", component: () => import("@/view/vueFun/test"), meta: { title: "测试", icon: "el-icon-tickets" } },
       { path: "testDialog", name: "测试弹框", component: () => import("@/view/vueFun/testDialog"), meta: { title: "测试弹框", icon: "el-icon-tickets" } },
+      { path: "testTable", name: "测试表格", component: () => import("@/view/vueFun/testTable"), meta: { title: "测试表格", icon: "el-icon-tickets" } },
+      { path: "vsCode", name: "VScode配置", component: () => import("@/view/vueFun/vscode"), meta: { title: "VScode配置", icon: "el-icon-tickets" } },
+      { path: "fileEXport", name: "文件传导", component: () => import("@/view/vueFun/fileexport"), meta: { title: "文件传导", icon: "el-icon-tickets" } },
     ]
   }
 ]

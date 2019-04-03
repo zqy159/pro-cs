@@ -24,8 +24,8 @@ a{
 	color:#999;
 }
 input{
-	outline: none;
-	border:0;
+	/* outline: none;
+	border:0; */
 }
 .pos{
     position: absolute;
