@@ -6,15 +6,23 @@
           <Option v-for="item in cityList" :value="item.value" :key="item.value" :style="{'display':listArr.indexOf(item.value)==-1?'block':'none'}">{{item.label}}</Option>
           <Option v-if="listArr.length>=cityList.length" disabled style="padding:0;text-align:center" value="disabled">无匹配数据</Option>
      </Select>
-    
+     <clickMsg :overMsg='colose' :outMsg='secelected'></clickMsg>
     </div>
     
 </template>
 <script>
+import clickMsg from './clickMsg.vue'
+import colose from '../../assets/colose.png'
+import secelected from '../../assets/secelected.png'
 export default {
+  components:{
+    clickMsg
+  },
   name: "selectAdd",
   data() {
     return {
+      colose,
+      secelected,
       cityList: [
         {
           value: "New York",
@@ -68,5 +76,7 @@ export default {
   }
 };
 </script>
+
+<style
 
 

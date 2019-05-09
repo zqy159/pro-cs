@@ -3,8 +3,8 @@
       <div class="NavBreadcrumb">
         <i :class="!isCollapse?'el-icon-d-arrow-left':'el-icon-d-arrow-right'" @click="changeCollapse"></i>
         <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item>{{$route.matched[0].meta.title}}</el-breadcrumb-item>
-          <el-breadcrumb-item>{{$route.meta.title}}</el-breadcrumb-item>
+          <!-- <el-breadcrumb-item>{{$route.matched[0].meta.title}}</el-breadcrumb-item>
+          <el-breadcrumb-item>{{$route.meta.title}}</el-breadcrumb-item> -->
         </el-breadcrumb>
       </div>
       <div  class="NavRadio">
