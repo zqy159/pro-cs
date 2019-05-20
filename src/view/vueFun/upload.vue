@@ -11,12 +11,14 @@
         <el-form-item label="描述" :prop="'powerAttrList.' + index + '.fieldName'" :rules="[{ required: true, message: '描述不能为空',trigger: 'change'}]">
           <!-- <el-input v-model="item.fieldName" placeholder="请输入描述"/> -->
           <!-- multiple -->
-          <el-select v-model="item.fieldName" :multiple='false' >
-              <el-option v-for="ite in dataArr[item.fieldDesc[2]]" :key="ite.value" :label="ite.label" :value="ite.value">
+          <el-select v-model="item.fieldName" :multiple='fil(item.fieldDesc)' :key='index'>  
+            <el-option v-for="(ite,i) in dataArr[item.fieldDesc[2]]" :key="ite.value" :label="ite.label" :value="ite.value">
               </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="排序" :prop="'powerAttrList.' + index + '.fieldSort'" :rules="moreRules.fieldSort">
+        <el-form-item label="排序" :prop="'powerAttrList.' + index + '.fieldSort'" :rules="{ required: true, message: isMessage?'请输入排序':'请输入啊s', trigger: 'blur' }"
+        
+        >
           <el-input type="number" v-model="item.fieldSort" autocomplete="off" placeholder="请输入排序" />
         </el-form-item>
         <el-button type="danger" v-if="formData3.powerAttrList.length > 1" size="medium" @click="removeRow(index)">
@@ -54,8 +56,8 @@ export default {
         label: 'JavaScript'
       }],
       // 数据模板
-      dataArr:{},
-      dataTable:[],
+      dataArr: {},
+      dataTable: [],
       optionsWithDisabled: [{
         value: 'zhinan',
         label: '指南',
@@ -66,7 +68,7 @@ export default {
           children: [{
             value: 'yizhi',
             label: '一致',
-            
+
           }, {
             value: 'fankui',
             label: '反馈'
@@ -116,14 +118,14 @@ export default {
           children: [{
             value: 'radio',
             label: 'Radio 单选框',
-            filter:1,
+            filter: 1,
           }, {
             value: 'checkbox',
             label: 'Checkbox 多选框'
           }, {
             value: 'input',
             label: 'Input 输入框',
-            filter:0,
+            filter: 0,
           }, {
             value: 'input-number',
             label: 'InputNumber 计数器'
@@ -255,6 +257,7 @@ export default {
           label: '组件交互文档'
         }]
       }],
+      isMessage:true,
       powerAttrList: [{
         fieldName: '',
         fieldSort: '',
@@ -262,7 +265,7 @@ export default {
       }],
       //新增表单的验证规则
       moreRules: {
-        fieldSort: [{ required: true, message: '请输入排序', trigger: 'blur' },
+        fieldSort: [{ required: true, message: this.messageMethods?'请输入排序':'请输入啊', trigger: 'blur' },
           // {
           //   validator: (rule, value, callback) => {
           //     if (value < 0) {
@@ -281,10 +284,18 @@ export default {
       },
     };
   },
-  created(){
-      this.dataTable=[...this.optionsWithDisabled]
+  created() {
+    this.dataTable = [...this.optionsWithDisabled]
+    this.$nextTick(()=>{
+        this.isMessage=true
+    })
+
   },
   methods: {
+    messageMethods(){
+      console.log( this.isMessage)
+      return  this.isMessage
+    },
     addRow() {
       this.formData3.powerAttrList.push({
         fieldName: '',
@@ -292,63 +303,53 @@ export default {
         fieldDesc: [],
       });
     },
-    cc(val){
+    cc(val) {
       console.log(val)
     },
-    changeSelect(val){
-      this.optionsWithDisabled.find(item=>{
-          return item.value==val[0]
-        }).children.find(item=>{
-          return item.value==val[1]
-        }).children.find(item=>{
-          return item.value==val[2]
-        }).disabled=true
+    changeSelect(val) {
+      this.optionsWithDisabled.find(item => {
+        return item.value == val[0]
+      }).children.find(item => {
+        return item.value == val[1]
+      }).children.find(item => {
+        return item.value == val[2]
+      }).disabled = true
 
-       this.optionsWithDisabled.find(item=>{
-          return item.value==val[0]
-        }).children.find(item=>{
-          return item.value==val[1]
-        }).children.find(item=>{
-          return item.value==val[2]
-        }).disabled
-      this.dataArr[val[2]]=[{
-        value:val[2]+'1',
-         label:val[2]+'1'
-      },{
-        value:val[2]+'2',
-         label:val[2]+'2'
-      },{
-        value:val[2]+'3',
-         label:val[2]+'3'
+
+      this.dataArr[val[2]] = [{
+        value: val[2] + '1',
+        label: val[2] + '1'
+      }, {
+        value: val[2] + '2',
+        label: val[2] + '2'
+      }, {
+        value: val[2] + '3',
+        label: val[2] + '3'
       }]
     },
-    fil(val){
-      // return 1
-      // console.log(val)
+    fil(val) {
+      let flag=0
       if(val.length>0){
-        // console.log(val)
-      
-       console.log(this.optionsWithDisabled.filter(item=>{
-        return item.value==val[0]
-      })[0].children.filter(ite=>{
-        return ite.value==val[1]
-      })[0].children.filter(it=>{
-        return it.value==val[2]
-      })[0].filter)
-         return this.optionsWithDisabled.filter(item=>{
-        return item.value==val[0]
-      })[0].children.filter(ite=>{
-        return ite.value==val[1]
-      })[0].children.filter(it=>{
-        return it.value==val[2]
-      })[0].filter
-      }else{
-        return 1
+        flag=this.optionsWithDisabled.filter(item => {
+            return item.value == val[0]
+          })[0].children.filter(ite => {
+            return ite.value == val[1]
+          })[0].children.filter(it => {
+            return it.value == val[2]
+          })[0].filter
       }
-     
-     
+        
+      if(flag==0){
+        return true
+      }else{
+        return false
+      }
+
+      
+
     },
     submit(formName) {
+      this.messageMethods()
       this.$refs[formName].validate((valid, obj) => {
         console.log(valid, obj)
         if (valid) {
@@ -364,7 +365,7 @@ export default {
       this.formData3.powerAttrList.splice(index, 1);
     },
   },
-  mounted(){
+  mounted() {
     console.log()
   }
 };

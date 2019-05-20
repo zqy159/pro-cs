@@ -71,7 +71,7 @@ export default {
       rules: {
         column: { required: true, message: '证据模板名称不能为空', trigger: 'blur' },
         grade: { required: true, message: '证据模板名称不能为空', trigger: 'change' },
-        val: { required: true, message: '证据模板名称不能为空', trigger: 'blur' },
+        val: { required: true, message: '证据模板名称不能为', trigger: 'blur' },
         a: { required: true, message: '不能为空', trigger: 'blur' },
       },
       ruleForm: {

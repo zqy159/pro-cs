@@ -1,171 +1,147 @@
 <template>
-  <div id="Test">
-    <!-- <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-      <div slot="content">提示</div>
-      <img v-if="isShow" :src="'/static/icon/'+'mark.png'" alt="" @mouseover="imgShow">
-      <img v-if="!isShow" :src="'/static/icon/'+'marks.png'" alt="" @mouseout="imgShow">
-    </el-tooltip> -->
+  <div>
+    <el-select v-model="value" multiple filterable remote reserve-keyword placeholder="请输入关键词" :remote-method="remoteMethod" :loading="loading">
+      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+      </el-option>
+    </el-select>
+    <div>
+      <el-tag v-for="(tag,index) in tags" :key="tag" closable type="info"  @close="handleClose(index)">
+        {{tag}}
+      </el-tag>
 
-    <!-- 步骤条 -->
-    <el-steps :active="1">
-      <el-step title="选择监控数据"></el-step>
-      <el-step title="填写告警信息"></el-step>
-      <el-step title="完成"></el-step>
-    </el-steps>
-
-    <div class="form">
-      <el-form :label-position="labelPosition" :model="formLabelAlign" label-width="120px">
-        <el-form-item label="监控类型 :">
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">字段合法性监控</el-radio>
-            <el-radio :label="6">数据量波动监控</el-radio>
-            <el-radio :label="9">关键指标波动监控</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="开始监控时间 :">
-          <el-input></el-input>
-        </el-form-item>
-        <el-form-item label="监控周期 :">
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">小时</el-radio>
-            <el-radio :label="6">天</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="监控任务状态 :">
-          <el-radio-group v-model="radio">
-            <el-radio :label="3">启动</el-radio>
-            <el-radio :label="6">停止</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="活动区域 : " prop="region">
-          <el-select v-model="region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="数据库 : " prop="region">
-          <el-select v-model="region" placeholder="请选择数据库">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="表 : " prop="region">
-          <el-select v-model="region" placeholder="请选择表">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="name" label="字段名称" width="80" align="center">
-          </el-table-column>
-          <el-table-column prop="region" label="字段类型" width="280" align="center">
-            <template>
-              <el-radio-group v-model="radio" size="small">
-                <el-radio :label="3">枚举 </el-radio>
-                <el-radio :label="6">映射</el-radio>
-                <el-radio :label="3">正则</el-radio>
-                <el-radio :label="6">范围</el-radio>
-              </el-radio-group>
-            </template>
-
-          </el-table-column>
-          <el-table-column prop="region" label="值获取规则" width="300px">
-            <template>
-              维表：<el-input></el-input>
-              字段：<el-input></el-input>
-            </template>
-          </el-table-column>
-          <el-table-column label="是否整数" align="center">
-            <template slot-scope="scope">
-              <el-checkbox v-model="checked"></el-checkbox>
-            </template>
-          </el-table-column>
-          <el-table-column prop="region" label="是否告警" align="center">
-            <template slot-scope="scope">
-              <el-checkbox v-model="checked"></el-checkbox>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form>
     </div>
+    <el-popover placement="bottom" width="220" trigger="click">
+      <div class="box">
+        <li v-for="(item,index) in option" :key="item.value" style="cursor:pointer;height:" @click='clickSelect(item,index)'>
+
+          <i class="el-icon-check" style="margin-right:10px;color:#409EFF" v-show='item.disabled'></i>{{item.label}}
+        </li>
+      </div>
+      <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchInput" slot="reference" style="width:250px" @input='getSearch'>
+      </el-input>
+    </el-popover>
   </div>
+
 </template>
 
 <script>
 export default {
   data() {
     return {
-      isShow: true,
-      radio: "",
-      region: '',
-      labelPosition: 'right',
-      formLabelAlign: {
-        name: '',
-        region: '',
-        type: ''
-      },
-      tableData: [{
-        name: 'imei'
-      }, {
-        name: 'version'
-      }, {
-        name: 'location'
-      }]
+      tags: [],
+      searchInput: '',
+      options: [],
+      selectOptions: [],
+      option: [],
+      value: [],
+      list: [],
+      loading: false,
+      states: ["Alabama", "Alaska", "Arizona",
+        "Arkansas", "California", "Colorado",
+        "Connecticut", "Delaware", "Florida",
+        "Georgia", "Hawaii", "Idaho", "Illinois",
+        "Indiana", "Iowa", "Kansas", "Kentucky",
+        "Louisiana", "Maine", "Maryland",
+        "Massachusetts", "Michigan", "Minnesota",
+        "Mississippi", "Missouri", "Montana",
+        "Nebraska", "Nevada", "New Hampshire",
+        "New Jersey", "New Mexico", "New York",
+        "North Carolina", "North Dakota", "Ohio",
+        "Oklahoma", "Oregon", "Pennsylvania",
+        "Rhode Island", "South Carolina",
+        "South Dakota", "Tennessee", "Texas",
+        "Utah", "Vermont", "Virginia",
+        "Washington", "West Virginia", "Wisconsin",
+        "Wyoming"]
     }
-
+  },
+  mounted() {
+    this.getSearch()
+    this.list = this.states.map(item => {
+      return { value: item, label: item };
+    });
   },
   methods: {
-    imgShow() {
-
-      this.isShow = !this.isShow
+    handleClose(index){
+     this.tags.splice(index,1)
+     this.option.forEach((items,i) => {
+        if (this.tags.includes(items.value)) {
+           this.option[i].disabled=true
+        } else {
+           this.option[i].disabled=false
+        }
+      })
     },
+    clickSelect(val,index) {
+      console.log(index)
+      if(this.tags.includes(val.value)){
+        this.tags.splice(this.tags.find((item)=>{
+          return item.value
+        }),1)
+      }else{
+        this.tags.push(val.value)
+      }
+   
+      this.option.forEach((items,i) => {
+        if (this.tags.includes(items.value)) {
+           this.option[i].disabled=true
+        } else {
+           this.option[i].disabled=false
+        }
+      })
+
+    },
+    getSearch() {
+
+      this.option = this.states.filter(item => {
+        return item.includes(this.searchInput)
+      }).slice(0, 20).map(items => {
+        if (this.tags.includes(items.value)) {
+          return { value: items, label: items, disabled: true };
+        } else {
+          return { value: items, label: items, disabled: false };
+        }
+
+      })
+      console.log()
+    },
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          this.options = this.list.filter(item => {
+            return item.label.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1;
+          });
+        }, 200);
+      } else {
+        this.options = [];
+      }
+    }
   }
 }
 </script>
 
-
-<style lang="scss">
-#Test {
-  padding: 30px;
-  margin: 0 auto;
-  width: 80%;
-  .el-select {
-    width: 100%;
-  }
-  table {
-    .el-radio {
-      margin-right: 10px;
-    }
-    .el-input {
-      width: 30%;
-      .el-input__inner {
-        height: 30px;
-      }
-    }
-  }
-  .form {
-    margin-top: 30px;
-  }
-  //   .el-input {
-  //     width: 50%;
-  //   }
-  img {
-    width: 24px;
+<style <style lang="scss">
+.box {
+  height: 220px;
+  overflow-y: auto;
+  li {
+    width: 215px;
+    font-size: 14px;
+    // padding: 0 20px;
     cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #606266;
+    height: 34px;
+    line-height: 34px;
   }
-  img:hover {
-    color: #f00;
+  li:hover {
+    background: #f5f7fa;
   }
-  //   .el-step.is-simple .el-step__icon{
-  //       width: 24px;
-  //       height: 24px;
-  //   }
-  //   .el-steps--simple{
-  //       background: #fff;
-  //   }
-  //   .el-step__arrow{
-
-  //   }
 }
 </style>
+
