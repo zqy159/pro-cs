@@ -63,8 +63,9 @@ function s2ab(s) {
     for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF
     return buf
 }
- 
-// 导入
+
+//导出
+
 /*
 * th => 表头
 * filterval => 表头key值
@@ -72,22 +73,20 @@ function s2ab(s) {
 * fileType => 文件类型
 * sheetName => sheet页名
 */
-export function downExcel ({list,filterVal,th,fileName, fileType, sheetName}) {
-    console.log(list)
-    list.map(v => filterVal.map(k => v[k])).unshift(th)
-    console.log(list)
-    const wb = new Workbook(), ws = data2ws(list)
-    // sheetName = sheetName || 'sheet1'
-    // wb.SheetNames.push(sheetName)
-    console.log(wb)
-    // wb.Sheets[sheetName] = ws
-    // fileType = fileType || 'xlsx'
-    // var wbout = XLSX.write(wb, {bookType: fileType, bookSST: false, type: 'binary'})
-    // fileName = fileName || '列表'
-    // saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), `${fileName}.${fileType}`)
+export function downExcel ({th, data, fileName, fileType, sheetName}) {
+    console.log
+    data.unshift(th)
+    const wb = new Workbook(), ws = data2ws(data)
+    sheetName = sheetName || 'sheet1'
+    wb.SheetNames.push(sheetName)
+    wb.Sheets[sheetName] = ws
+    fileType = fileType || 'xlsx'
+    var wbout = XLSX.write(wb, {bookType: fileType, bookSST: false, type: 'binary'})
+    fileName = fileName || '列表'
+    saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), `${fileName}.${fileType}`)
 }
 
-//导出
+// 导入
 /*
 * obj => 元素对象
 * data => 数据

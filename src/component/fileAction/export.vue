@@ -13,12 +13,11 @@ export default {
     name:"in-export",
     methods:{
         exportExcel(){
-            // console.log(this.data)
             downExcel(this.data)
         }
     },
     mounted(){
-        console.log(this.data)
+        // console.log(this.data)
     }
 
 }
