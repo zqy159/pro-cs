@@ -12,6 +12,12 @@ import Directive from "@/directiveS"
 // iView UI框架
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import elCascaderMulti from "el-cascader-multi";
+import multiCascader from 'multi-cascader-base-ele'
+
+Vue.use(multiCascader)
+
+Vue.use(elCascaderMulti);
 Vue.config.productionTip = false
 
 
