@@ -1,96 +1,301 @@
 <template>
-        <div>
-            <el-form :model="numberValidateForm" ref="numberValidateForm" label-width="100px" class="demo-ruleForm">
-  <el-form-item
-    label="年龄"
-    prop="age"
-    :rules="m || k?rules.age:null"
-  >
-    <el-input type="age" v-model.number="numberValidateForm.age" autocomplete="off"></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="primary" @click="submitForm('numberValidateForm')">提交</el-button>
-    <el-button @click="resetForm">重置</el-button>
-  </el-form-item>
-</el-form>
-
-            <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
-<div style="width:500px;position:absolute;overflow:hidden;border:1px solid #f00">
-    <el-dialog
-  title="提示"
-  :visible.sync="dialogVisible"
-  width="30%"
-  :before-close="handleClose">
-  <p style="height:500px">这是一段信息</p>
- <!-- <p style="height:500px">这是一段信息</p>
- <p style="height:500px">这是一段信息</p>
- <p style="height:500px">这是一段信息</p>
- <p style="height:500px">这是一段信息</p> -->
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
-</el-dialog>
-</div>
-
-        </div>
-
+  <div>
+    原数据：{{initData}}
+    <br>
+    现数据：
+    <el-cascader-multi @change='select' popper-class='a' v-model="checkList" :data="data" filterable style="width:200px"> </el-cascader-multi>
+  </div>
 
 </template>
-
-
 <script>
-  export default {
-    data() {
-      return {
-        numberValidateForm: {
-          age: ''
-        },
-        dialogVisible:false,
-        k:false,
-        m:true,
-        rules:{
-            age:{ required: true, message: '请输入邮箱地址', trigger: 'blur' },
-        }
-      };
+export default {
+  data() {
+    return {
+      data: [{
+        value: 'zhinan',
+        label: '指南',
+        children: [{
+          value: 'shejiyuanze',
+          label: '设计原则',
+          children: [{
+            value: 'yizhi',
+            label: '一致'
+          }, {
+            value: 'fankui',
+            label: '反馈'
+          }, {
+            value: 'xiaolv',
+            label: '效率'
+          }, {
+            value: 'kekong',
+            label: '可控'
+          }]
+        }, {
+          value: 'daohang',
+          label: '导航',
+          children: [{
+            value: 'cexiangdaohang',
+            label: '侧向导航'
+          }, {
+            value: 'dingbudaohang',
+            label: '顶部导航'
+          }]
+        }]
+      }, {
+        value: 'zujian',
+        label: '组件',
+        children: [{
+          value: 'basic',
+          label: 'Basic',
+          children: [{
+            value: 'layout',
+            label: 'Layout 布局'
+          }, {
+            value: 'color',
+            label: 'Color 色彩'
+          }, {
+            value: 'typography',
+            label: 'Typography 字体'
+          }, {
+            value: 'icon',
+            label: 'Icon 图标'
+          }, {
+            value: 'button',
+            label: 'Button 按钮'
+          }]
+        }, {
+          value: 'form',
+          label: 'Form',
+          children: [{
+            value: 'radio',
+            label: 'Radio 单选框'
+          }, {
+            value: 'checkbox',
+            label: 'Checkbox 多选框'
+          }, {
+            value: 'input',
+            label: 'Input 输入框'
+          }, {
+            value: 'input-number',
+            label: 'InputNumber 计数器'
+          }, {
+            value: 'select',
+            label: 'Select 选择器'
+          }, {
+            value: 'cascader',
+            label: 'Cascader 级联选择器'
+          }, {
+            value: 'switch',
+            label: 'Switch 开关'
+          }, {
+            value: 'slider',
+            label: 'Slider 滑块'
+          }, {
+            value: 'time-picker',
+            label: 'TimePicker 时间选择器'
+          }, {
+            value: 'date-picker',
+            label: 'DatePicker 日期选择器'
+          }, {
+            value: 'datetime-picker',
+            label: 'DateTimePicker 日期时间选择器'
+          }, {
+            value: 'upload',
+            label: 'Upload 上传'
+          }, {
+            value: 'rate',
+            label: 'Rate 评分'
+          }, {
+            value: 'form',
+            label: 'Form 表单'
+          }]
+        }, {
+          value: 'data',
+          label: 'Data',
+          children: [{
+            value: 'table',
+            label: 'Table 表格'
+          }, {
+            value: 'tag',
+            label: 'Tag 标签'
+          }, {
+            value: 'progress',
+            label: 'Progress 进度条'
+          }, {
+            value: 'tree',
+            label: 'Tree 树形控件'
+          }, {
+            value: 'pagination',
+            label: 'Pagination 分页'
+          }, {
+            value: 'badge',
+            label: 'Badge 标记'
+          }]
+        }, {
+          value: 'notice',
+          label: 'Notice',
+          children: [{
+            value: 'alert',
+            label: 'Alert 警告'
+          }, {
+            value: 'loading',
+            label: 'Loading 加载'
+          }, {
+            value: 'message',
+            label: 'Message 消息提示'
+          }, {
+            value: 'message-box',
+            label: 'MessageBox 弹框'
+          }, {
+            value: 'notification',
+            label: 'Notification 通知'
+          }]
+        }, {
+          value: 'navigation',
+          label: 'Navigation',
+          children: [{
+            value: 'menu',
+            label: 'NavMenu 导航菜单'
+          }, {
+            value: 'tabs',
+            label: 'Tabs 标签页'
+          }, {
+            value: 'breadcrumb',
+            label: 'Breadcrumb 面包屑'
+          }, {
+            value: 'dropdown',
+            label: 'Dropdown 下拉菜单'
+          }, {
+            value: 'steps',
+            label: 'Steps 步骤条'
+          }]
+        }, {
+          value: 'others',
+          label: 'Others',
+          children: [{
+            value: 'dialog',
+            label: 'Dialog 对话框'
+          }, {
+            value: 'tooltip',
+            label: 'Tooltip 文字提示'
+          }, {
+            value: 'popover',
+            label: 'Popover 弹出框'
+          }, {
+            value: 'card',
+            label: 'Card 卡片'
+          }, {
+            value: 'carousel',
+            label: 'Carousel 走马灯'
+          }, {
+            value: 'collapse',
+            label: 'Collapse 折叠面板'
+          }]
+        }]
+      }, {
+        value: 'ziyuan',
+        label: '资源',
+        children: [{
+          value: 'axure',
+          label: 'Axure Components'
+        }, {
+          value: 'sketch',
+          label: 'Sketch Templates'
+        }, {
+          value: 'jiaohu',
+          label: '组件交互文档'
+        }]
+      }],
+      checkList: [],
+      initData: [],
+    }
+  },
+  created() {
+
+  },
+  methods: {
+    meo() {
+
     },
-    methods: {
-        handleClose(){
-            this.dialogVisible = false
-        },
-      submitForm(formName) {
-        this.m=false
-        this.$refs[formName].validate((valid) => {
-        console.log(valid)
-          if (valid) {
-            alert('submit!');
+    filterMethods(data,checkList) {
+      let storage = {}
+      var initData = {}
+      data.forEach(item => {
+        if (item.children) {
+          var num = 0
+          item.children.forEach(ites => {
+            if (ites.children) {
+              storage[ites.value] = ites.children.length
+              num += ites.children.length
+            } else {
+              num++
+              storage[ites.value] = 1
+            }
+          })
+          storage[item.value] = num
+        } else {
+          storage[item.value] = 1
+        }
+      })
+      checkList.forEach(item => {
+        if (initData[item[0]]) {
+          initData[item[0]]++
+
+          if (initData[item[1]]) {
+            initData[item[1]]++
           } else {
-            console.log('error submit!!');
-            return false;
+            initData[item[1]] = 1
           }
-        });
-      },
-      resetForm(formName) {
-          this.k=true
-      }
+
+        } else {
+          initData[item[0]] = 1
+          if (initData[item[1]]) {
+            initData[item[1]]++
+          } else {
+            initData[item[1]] = 1
+          }
+        }
+      })
+
+      var s = []
+      Object.keys(initData).forEach(item => {
+        if (initData[item] == storage[item]) {
+          s.push(item)
+        }
+
+      })
+      let initDatas = []
+      checkList.forEach(item => {
+        if (s.includes(item[0])) {
+          if (!initDatas.includes(item[0])) {
+            initDatas.push(item[0])
+          }
+        } else if (s.includes(item[1])) {
+          if (!initDatas.includes(item[1])) {
+            initDatas.push(item[1])
+          }
+        } else {
+          initDatas.push(item[2])
+        }
+      })
+      return initDatas
+    },
+    select(s, b) {
+     this.initData=this.filterMethods(this.data,this.checkList)
+
     }
   }
+}
 </script>
 
-<style>
-@keyframes myfirst
-{
-from {right:-300px;}
-to {right: 0px;}
+<style >
+.el-select__tags span {
+  display: none;
 }
-.el-dialog__wrapper{
-        overflow-x: hidden;
-}
-.el-dialog{
-    float: right;
-    min-height:100%;
-    overflow: hidden;
-    margin:0 !important;
-    animation:myfirst 1s;
+.a.el-select-dropdown.el-popper.is-multiple.multi-cascader-style
+  .li-style.active-li {
+  color: #409eff;
+  background-color: #f5f7fa;
 }
 </style>
+

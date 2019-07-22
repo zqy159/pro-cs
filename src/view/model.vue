@@ -1,64 +1,79 @@
 <template>
- 
-  <div class="block">
-    <span class="demonstration">带快捷选项</span>
-    <el-date-picker
-      v-model="value4"
-      type="datetimerange"
-      :picker-options="pickerOptions2"
-      range-separator="至"
-      start-placeholder="开始日期"
-      end-placeholder="结束日期"
-      v-if='flag'
-      align="right">
-    </el-date-picker>
-    {{s}}
-    <el-input type='text' v-model='s' v-if='!flag' @focus="flag=!flag">
-
-    </el-input>
-  </div>
+  <el-table :data="tableData3" style="width: 100%">
+    <el-table-column prop="date" label="日期日期" width="150" >
+    </el-table-column>
+    <el-table-column label="配送信息">
+      <el-table-column prop="name" label="姓名" width="120">
+      </el-table-column>
+      <el-table-column label="地址" :show-overflow-tooltip="true">
+        <el-table-column prop="province" label="省份" width="120">
+        </el-table-column>
+        <el-table-column prop="city" label="市区" width="120">
+        </el-table-column>
+        <el-table-column prop="address" label="地址" width="300">
+        </el-table-column>
+        <el-table-column prop="zip" label="邮编" width="120">
+        </el-table-column>
+      </el-table-column>
+    </el-table-column>
+  </el-table>
 </template>
 
 <script>
-  export default {
-    data() {
-      var _this=this
-      return {
-        s:'1',
-        flag:true,
-        pickerOptions2: {
-          shortcuts: [{
-            text: '最近一周',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              console.log(_this.flag)
-              _this.flag=false
-              _this.s='最近一周'
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近一个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit('pick', [start, end]);
-            }
-          }, {
-            text: '最近三个月',
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit('pick', [start, end]);
-            }
-          }]
-        },
-        value3: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-        value4: ''
-      };
+export default {
+  data() {
+    return {
+      tableData3: [{
+        date: '2016-05-03',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }, {
+        date: '2016-05-08',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }, {
+        date: '2016-05-06',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        province: '上海',
+        city: '普陀区',
+        address: '上海市普陀区金沙江路 1518 弄',
+        zip: 200333
+      }]
     }
-  };
+  }
+}
 </script>

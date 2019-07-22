@@ -28,7 +28,8 @@ const powerRouter = [
     path: "/index",
     name: "首页",
     component: Layout,
-    meta: { title: "首页", icon: "el-icon-tickets" }
+    meta: { title: "首页", icon: "el-icon-tickets" },
+ 
   },
   {
     path: "/user",
