@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "echarts": "^4.2.1",
     "el-cascader-multi": "^1.1.8",
     "element-ui": "^2.4.10",
     "file-saver": "^2.0.0",

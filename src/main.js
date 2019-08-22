@@ -14,6 +14,9 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import elCascaderMulti from "el-cascader-multi";
 import multiCascader from 'multi-cascader-base-ele'
+import Echarts from 'echarts'
+Vue.prototype.echarts = Echarts
+
 
 Vue.use(multiCascader)
 

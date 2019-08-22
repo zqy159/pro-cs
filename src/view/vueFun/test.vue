@@ -1,147 +1,277 @@
 <template>
-  <div>
-    <el-select v-model="value" multiple filterable remote reserve-keyword placeholder="请输入关键词" :remote-method="remoteMethod" :loading="loading">
-      <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-      </el-option>
-    </el-select>
-    <div>
-      <el-tag v-for="(tag,index) in tags" :key="tag" closable type="info"  @close="handleClose(index)">
-        {{tag}}
-      </el-tag>
+  <div style="height:500px">
+    <el-table :data="tableData3" height="100%" border style="width: 100%">
+      <el-table-column prop="date" label="日期" width="180">
+      </el-table-column>
+      <el-table-column prop="name" label="姓名" width="180">
+      </el-table-column>
+      <el-table-column prop="address" label="地址">
+      </el-table-column>
+    </el-table>
+    <div id='main' style="width: 600px;height:400px;">
 
     </div>
-    <el-popover placement="bottom" width="220" trigger="click">
-      <div class="box">
-        <li v-for="(item,index) in option" :key="item.value" style="cursor:pointer;height:" @click='clickSelect(item,index)'>
-
-          <i class="el-icon-check" style="margin-right:10px;color:#409EFF" v-show='item.disabled'></i>{{item.label}}
-        </li>
-      </div>
-      <el-input placeholder="请输入内容" prefix-icon="el-icon-search" v-model="searchInput" slot="reference" style="width:250px" @input='getSearch'>
-      </el-input>
-    </el-popover>
   </div>
 
 </template>
 
 <script>
+import lay from './lay.vue'
 export default {
-  data() {
-    return {
-      tags: [],
-      searchInput: '',
-      options: [],
-      selectOptions: [],
-      option: [],
-      value: [],
-      list: [],
-      loading: false,
-      states: ["Alabama", "Alaska", "Arizona",
-        "Arkansas", "California", "Colorado",
-        "Connecticut", "Delaware", "Florida",
-        "Georgia", "Hawaii", "Idaho", "Illinois",
-        "Indiana", "Iowa", "Kansas", "Kentucky",
-        "Louisiana", "Maine", "Maryland",
-        "Massachusetts", "Michigan", "Minnesota",
-        "Mississippi", "Missouri", "Montana",
-        "Nebraska", "Nevada", "New Hampshire",
-        "New Jersey", "New Mexico", "New York",
-        "North Carolina", "North Dakota", "Ohio",
-        "Oklahoma", "Oregon", "Pennsylvania",
-        "Rhode Island", "South Carolina",
-        "South Dakota", "Tennessee", "Texas",
-        "Utah", "Vermont", "Virginia",
-        "Washington", "West Virginia", "Wisconsin",
-        "Wyoming"]
-    }
+  async created() {
+
+
+  },
+  components: {
+    lay
   },
   mounted() {
-    this.getSearch()
-    this.list = this.states.map(item => {
-      return { value: item, label: item };
-    });
+    this.myCharts2()
   },
   methods: {
-    handleClose(index){
-     this.tags.splice(index,1)
-     this.option.forEach((items,i) => {
-        if (this.tags.includes(items.value)) {
-           this.option[i].disabled=true
-        } else {
-           this.option[i].disabled=false
-        }
-      })
-    },
-    clickSelect(val,index) {
-      console.log(index)
-      if(this.tags.includes(val.value)){
-        this.tags.splice(this.tags.find((item)=>{
-          return item.value
-        }),1)
-      }else{
-        this.tags.push(val.value)
-      }
-   
-      this.option.forEach((items,i) => {
-        if (this.tags.includes(items.value)) {
-           this.option[i].disabled=true
-        } else {
-           this.option[i].disabled=false
-        }
-      })
+    myCharts2() {
+      let myChart = this.echarts.init(document.getElementById('main'));
+      let option = {
+        color: ['#3398DB'],
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            axisTick: {
+              alignWithLabel: true
+            }
+          }
+        ],
+
+        yAxis: [
+          {
+            type: 'value'
+          }
+        ],
+        series: [
+          {
+            name: '直接访问',
+            type: 'bar',
+            barWidth: '60%',
+            data: [10, 52, 200, 334, 390, 330, 220],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: true,
+                  position: 'top',
+                  textStyle: {
+                    color: '#615a5a'
+                  },
+                  formatter: function (params) {
+                    console.log(params)
+                    if (params.value == 0) {
+                      return '';
+                    } else {
+                      return params.value+'\n\n'+3;
+                    }
+                  }
+                }
+              }
+            },
+          }
+        ]
+      };
+      myChart.setOption(option);
 
     },
-    getSearch() {
+    myCharts() {
+      let myChart = this.echarts.init(document.getElementById('main'));
 
-      this.option = this.states.filter(item => {
-        return item.includes(this.searchInput)
-      }).slice(0, 20).map(items => {
-        if (this.tags.includes(items.value)) {
-          return { value: items, label: items, disabled: true };
-        } else {
-          return { value: items, label: items, disabled: false };
-        }
+      let option = {
+        title: {
+          text: '折线图堆叠'
+        },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+        //     type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
+        //   }
+        // },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow',        // 默认为直线，可选为：'line' | 'shadow'
+          },
+          formatter: function (params) {
+            // params.map
+            // console.log(params)
+            let str = params[0].axisValue + '<br/>'
+            params.forEach(item => {
+              str += item.marker + item.seriesName + ':' + item.value + '%' + '<br/>'
+            })
+            return str
+            // return params[0].name + params[0].value '<br />' + params[1].value;
+          }
+        },
+        legend: {
+          data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: ['周一', '周二', '周三']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            restore: { show: true },
+            saveAsImage: { show: true }
+          }
+        },
+        itemStyle: {
+          normal: {
+            label: {
+              show: true,
+              position: 'top',
+              textStyle: {
+                color: '#615a5a'
+              },
+              formatter: function (params) {
+                if (params.value == 0) {
+                  return '';
+                } else {
+                  return params.value;
+                }
+              }
+            }
+          }
+        },
 
-      })
-      console.log()
-    },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.options = this.list.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
-      } else {
-        this.options = [];
-      }
+        yAxis: [{
+          type: 'value',
+          axisLabel: {
+            show: true,
+            // textStyle: {
+            //   color: '#3398DB',
+            //   fontSize: '50%',
+            // },
+            // interval: 0,
+            // showMinLabel: true,
+            formatter: '{value} %'
+          },
+          // min: 90,
+          max: 100,
+          splitNumber: 10
+        }],
+
+
+        series: [
+          {
+            name: '邮件营销',
+            type: 'line',
+            data: [48, 60, 70]
+          },
+          {
+            name: '联盟广告',
+            type: 'line',
+            data: [48, 60, 70]
+          },
+          {
+            name: '联盟广告',
+            type: 'line',
+            data: [48, 60, 70]
+          },
+        ]
+
+      };
+
+      myChart.setOption(option);
+    }
+  },
+  data() {
+    return {
+      a: false,
+      tableData3: [{
+        date: '2016-05-03',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-02',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-04',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-01',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-08',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-06',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }, {
+        date: '2016-05-07',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄'
+      }]
     }
   }
 }
 </script>
-
-<style <style lang="scss">
-.box {
-  height: 220px;
-  overflow-y: auto;
-  li {
-    width: 215px;
-    font-size: 14px;
-    // padding: 0 20px;
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #606266;
-    height: 34px;
-    line-height: 34px;
-  }
-  li:hover {
-    background: #f5f7fa;
-  }
-}
-</style>
-

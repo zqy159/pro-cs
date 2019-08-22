@@ -1,12 +1,12 @@
 <template>
     <div class="layout" v-if="$store.getters.username">
-         <!-- <Header /> -->
+         <Header />
         <div class="content">
             <div style="float:left" :class="r?'left1':'left2'">
-                  <!-- <Navigation />  -->
+                  <Navigation /> 
             </div>
             <div style="float:left">
-                <!-- <NavBreadcrumb />   -->
+                <NavBreadcrumb />  
                     <router-view />
             </div>
             <!-- <el-row>
