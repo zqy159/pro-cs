@@ -7,12 +7,15 @@
       active-text-color="#2d8cf0" :collapse="isCollapse"
       :unique-opened=false
       >
-            <el-menu-item index="/index" @click="SwitchNav({path:'/index',title:'首页'})">
-                <i :class="newrouter[0].meta.icon"></i>
-                <span slot="title">首页</span>
+      <template v-for="(item,i) in newrouter">
+
+    
+            <el-menu-item v-if='!item.children'  :index="item.path"  @click="SwitchNav({path:item.path,title:item.meta.title})">
+                <i :class="item.meta.icon"></i>
+                <span slot="title">{{item.meta.title}}</span>
             </el-menu-item>
      
-            <el-submenu v-for="(item,i) in newrouter" :index="item.path" v-if="item.name!='首页'" :key="i">
+            <el-submenu v-else  :index="item.path" :key="i" >
                 <template slot="title">
                     <i :class="item.meta.icon"></i>
                     <span>{{item.meta.title}}</span>
@@ -22,7 +25,7 @@
                     <span slot="title">{{r.meta.title}}</span>
                 </el-menu-item>
             </el-submenu>
-      
+        </template>
     </el-menu>
     </div>
 </template>
@@ -37,6 +40,7 @@ export default {
   data() {
     return {
       isCollapse:false,
+      arr:[{}],
       theme2: "light"
     };
   },

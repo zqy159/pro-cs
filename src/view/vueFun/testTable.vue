@@ -46,12 +46,15 @@
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-button @click='downExcel'>下载</el-button>
   </div>
 
 </template>
 
   <script>
 import iconMsg from "@/view/vueFun/iconMsg.vue"
+import {downExcel} from "@/component/fileAction/file.js"
 import conWrap from "@/view/vueFun/conWrap.vue"
 export default {
   components: {
@@ -67,6 +70,20 @@ export default {
           a: ''
         }
       },
+      excelData: [
+        {
+          name: '张三',
+          birthday: new Date('1990-01-01'),
+          sex: '男',
+          age: 28
+        },
+        {
+          name: '李四',
+          birthday: new Date('1991-01-01'),
+          sex: '女',
+          age: 27
+        }
+      ],
       position: 0,
       rules: {
         column: { required: true, message: '证据模板名称不能为空', trigger: 'blur' },
@@ -114,21 +131,28 @@ export default {
     handleClose() {
       this.dialogVisible = false
     },
+     downExcel() {
+      const th = ['姓名', '生日', '性别', '年龄']
+      const filterVal = ['name', 'birthday', 'sex', 'age']
+      var data = this.excelData.map(v => filterVal.map(k => v[k]))
+      console.log(data)
+      const [fileName, fileType, sheetName] = ['测试下载', 'xlsx', '测试页']
+      downExcel({th, data, fileName, fileType, sheetName})
+    },
     renderHeader(h, { column, $index }) {
-      return h('div', [
-        h('span', {
-          domProps: {
-            innerHTML: column.label
-          }
+      return h('span', [
+        
+        h('el-checkbox',
+            {
+                style: 'margin-left: 5px;',
+                on: {
+                    change(){
+                        console.log(1)
+                    }
+                }
         }),
-        h(iconMsg, {
-          props: { messages: "备注信息2" },
-          style: {
-            'cursor': 'pointer',
-            'margin-left': '10px'
-          }
-        })
-      ])
+        h('span', column.label)
+    ]);
 
     },
     submit() {

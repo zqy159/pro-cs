@@ -2,7 +2,14 @@
     <div class="layout" v-if="$store.getters.username">
          <Header />
         <div class="content">
-            <el-row>
+            <div style="float:left" :class="r?'left1':'left2'">
+                  <Navigation /> 
+            </div>
+            <div style="float:left">
+                <NavBreadcrumb />  
+                    <router-view />
+            </div>
+            <!-- <el-row>
                 <el-col :span="leftWidth">
                     <Navigation /> 
                 </el-col>
@@ -10,7 +17,7 @@
                     <NavBreadcrumb />  
                     <router-view />
                 </el-col>
-            </el-row>
+            </el-row> -->
         </div>  
         
     </div>
@@ -33,23 +40,28 @@ export default {
   data(){
     return{
         leftWidth:3,
+        r:true,
         rightWidth:21,
     }
   },
   mounted() {
       this.$center.$on("isCollapse",(r)=>{
           if(r){
-              this.leftWidth=1
-              this.rightWidth=23
+              this.r=flase
           }else{
-              this.leftWidth=3
-              this.rightWidth=21
+               this.r=true
           }
       })
   }
 };
 </script>
 <style lang="scss">
+// .left1{
+//     width:200px;
+// }
+// .left2{
+//     width:64px;
+// }
 .layout {
   height: 100%;
   .content {

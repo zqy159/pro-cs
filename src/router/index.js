@@ -28,7 +28,8 @@ const powerRouter = [
     path: "/index",
     name: "首页",
     component: Layout,
-    meta: { title: "首页", icon: "el-icon-tickets" }
+    meta: { title: "首页", icon: "el-icon-tickets" },
+ 
   },
   {
     path: "/user",
@@ -115,6 +116,7 @@ const powerRouter = [
       { path: "upload", name: "上传", component: () => import("@/view/vueFun/upload"), meta: { title: "上传", icon: "el-icon-tickets" } },
       { path: "export", name: "导出", component: () => import("@/view/vueFun/export"), meta: { title: "导出", icon: "el-icon-tickets" } },
       { path: "test", name: "测试", component: () => import("@/view/vueFun/test"), meta: { title: "测试", icon: "el-icon-tickets" } },
+      { path: "test2", name: "测试2", component: () => import("@/view/vueFun/test2"), meta: { title: "测试2", icon: "el-icon-tickets" } },
       { path: "testDialog", name: "测试弹框", component: () => import("@/view/vueFun/testDialog"), meta: { title: "测试弹框", icon: "el-icon-tickets" } },
       { path: "testTable", name: "测试表格", component: () => import("@/view/vueFun/testTable"), meta: { title: "测试表格", icon: "el-icon-tickets" } },
       { path: "vsCode", name: "VScode配置", component: () => import("@/view/vueFun/vscode"), meta: { title: "VScode配置", icon: "el-icon-tickets" } },
